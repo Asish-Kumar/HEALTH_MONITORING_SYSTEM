@@ -2,8 +2,9 @@
 # For Python 2 / 3 compatibility
 from __future__ import print_function
 import csv
-
 import requests
+
+result_algo = ""
 
 with open('classify_users.csv', 'r') as f:
     reader = csv.reader(f)
@@ -282,6 +283,7 @@ def build_tree(rows):
 
 def classify(row, node):
     """See the 'rules of recursion' above."""
+    global result_algo
 
     # Base case: we've reached a leaf
     if isinstance(node, Leaf):
@@ -289,10 +291,9 @@ def classify(row, node):
         print(type(node.predictions))
         print(node.predictions)
         for key, value in node.predictions.items():
-            if(value == 1):
-                print(key)
+            if value == 1:
+                result_algo = key
         return node.predictions
-
 
     # Decide whether to follow the true-branch or the false-branch.
     # Compare the feature / value stored in the node,
@@ -332,27 +333,27 @@ def print_leaf(counts):
 # print_leaf(classify(training_data[1], my_tree))
 #############################################################################################################
 
-if __name__ == '__main__':
 
-    my_tree = build_tree(training_data)
 
-    # print_tree(my_tree)
+my_tree = build_tree(training_data)
 
-    # get testing_data from file from firebase server
-    age_url = "https://storage.googleapis.com/aryaproject2-7252e.appspot.com/temp/age.txt"
-    gender_url = "https://storage.googleapis.com/aryaproject2-7252e.appspot.com/temp/gender.txt"
+# print_tree(my_tree)
 
-    gender = requests.get(gender_url).text.rstrip()
-    age = int(requests.get(age_url).text.rstrip())
+# get testing_data from file from firebase server
+age_url = "https://storage.googleapis.com/aryaproject2-7252e.appspot.com/temp/age.txt"
+gender_url = "https://storage.googleapis.com/aryaproject2-7252e.appspot.com/temp/gender.txt"
 
-    testing_data = [
-        [gender, age]
-    ]
+gender = requests.get(gender_url).text.rstrip()
+age = int(requests.get(age_url).text.rstrip())
 
-    for row in testing_data:
-        print("Actual: %s. Predicted: %s" %
-              (row[-1], print_leaf(classify(row, my_tree))))
-        print(row[-1])
+testing_data = [
+    [gender, age]
+]
+
+for row in testing_data:
+    print("Actual: %s. Predicted: %s" %
+          (row[-1], print_leaf(classify(row, my_tree))))
+    print(result_algo)
 
 # Next steps
 # - add support for missing (or unseen) attributes

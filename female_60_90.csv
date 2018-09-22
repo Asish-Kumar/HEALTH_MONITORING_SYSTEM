@@ -1,4 +1,4 @@
-Heart Rate,Body temperature,Systolic Pressure,diastolicpressure
+HeartRate,Temperature,SystolicBloodPressure,DiastolicBloodPressure
 80,36.955,105,67
 100,36.739,116,78
 80,36.959,117,71
