@@ -96,6 +96,5 @@ while True:
         response = requests.post(ml_run_url, files=files)
         print(response.text)
 
-
     else:
         pass
