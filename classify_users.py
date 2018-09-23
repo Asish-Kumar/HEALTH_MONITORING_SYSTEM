@@ -291,7 +291,7 @@ def classify(row, node):
         print(type(node.predictions))
         print(node.predictions)
         for key, value in node.predictions.items():
-            if value == 1:
+#             if value == 1:
                 result_algo = key
         return node.predictions
 
